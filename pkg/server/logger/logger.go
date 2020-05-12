@@ -35,7 +35,7 @@ const (
 	LevelError = "error"
 )
 
-func NewLogger(config *LoggerConfiguration) *Logger {
+func NewLogger(config *LoggerConfiguration) (*Logger) {
 	cores := []zapcore.Core{}
 	logger := &Logger{
 		consoleLevel: zap.NewAtomicLevelAt(getZapLevel(config.ConsoleLevel)),

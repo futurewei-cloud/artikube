@@ -44,7 +44,11 @@ func cliHandler(c *cli.Context) {
 		Debug:          conf.GetBool("debug"),
 	}
 
-	server := newServer(options)
+	server, err := newServer(options)
+
+	if err != nil {
+		crash(err)
+	}
 
 	server.Listen(conf.GetInt("port"))
 }
