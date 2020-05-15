@@ -18,10 +18,10 @@ type Route struct {
 
 type Router struct {
 	*gin.Engine
-	Logger        *arti_logger.Logger
-	Routes        []*Route
-	ReadTimeout   time.Duration
-	WriteTimeout  time.Duration
+	Logger       *arti_logger.Logger
+	Routes       []*Route
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
 }
 
 type RouterOption struct {
@@ -60,5 +60,8 @@ func (router *Router) Start(port int) {
 	if err != nil {
 		router.Logger.Error(err.Error())
 	}
-	
+}
+
+func (router *Router) SetRoutes(routes []*Route) {
+	router.Routes = routes
 }

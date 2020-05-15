@@ -2,8 +2,9 @@ package artikube
 
 import (
 	arti_logger "github.com/futurewei-cloud/artikube/pkg/server/logger"
+	arti_router "github.com/futurewei-cloud/artikube/pkg/server/router"
 	"github.com/futurewei-cloud/artikube/pkg/storage"
-	"github.com/gin-gonic/gin" 
+	"github.com/gin-gonic/gin"
 )
 
 type (
@@ -15,13 +16,15 @@ type (
 	Server struct {
 		StorageBackend storage.Backend
 		ArtifactURL    string
-		Logger         arti_logger.Logger
-		//router
+		Logger         *arti_logger.Logger
+		Router         *arti_router.Router
 	}
 
 	//ServerOptions are options
 	ServerOptions struct {
 		StorageBackend storage.Backend
+		Logger         *arti_logger.Logger
+		Router         *arti_router.Router
 		LogJSON        bool
 		Debug          bool
 		ArtifactURL    string
@@ -29,7 +32,7 @@ type (
 )
 
 func NewServer(options ServerOptions) (*Server, error) {
-	logger := arti_logger.NewLogger(&arti_logger.LoggerConfiguration{})
+	//logger := arti_logger.NewLogger(&arti_logger.LoggerConfiguration{})
 	var artifactURL string
 	if options.ArtifactURL != "" {
 		artifactURL = options.ArtifactURL
@@ -37,13 +40,16 @@ func NewServer(options ServerOptions) (*Server, error) {
 
 	server := &Server{
 		StorageBackend: options.StorageBackend,
-		ArtifactURL:    artifactURL,
-		Logger: *logger,
+		Logger:         options.Logger,
+		Router:         options.Router,
+		ArtifactURL:    artifactURL, 
 	}
+
+	server.Router.SetRoutes(server.Routes())
 
 	return server, nil
 }
 
 func (server *Server) Listen(port int) {
-	//server.Router.start(port)
+
 }
