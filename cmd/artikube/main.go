@@ -8,8 +8,10 @@ import (
 
 	"github.com/futurewei-cloud/artikube/pkg/config"
 	artikube "github.com/futurewei-cloud/artikube/pkg/server"
+
+	//arti_logger "github.com/futurewei-cloud/artikube/pkg/server/logger"
 	"github.com/futurewei-cloud/artikube/pkg/storage"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -23,16 +25,21 @@ var (
 )
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "artikube"
-	app.Version = fmt.Sprint("%s (build %s)", Version, Revision)
-	app.Usage = "Artifact Repository with the support for Maven, NPM, Docker, etc"
-	//app.Action = cliHandler
-	app.Flags = config.CLIFlags
-	app.Run(os.Args)
+	app := &cli.App{
+		Name:    "artikube",
+		Version: fmt.Sprint("%s (build %s)", Version, Revision),
+		Usage:   "Artifact Repository with the support for Maven, NPM, Docker, etc",
+		Action:  cliAction,
+		Flags:   config.CLIFlags,
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Println("Artikube does not start due to the error: %s", err)
+	}
 }
 
-func cliHandler(c *cli.Context) {
+func cliAction(c *cli.Context) error {
 	conf := config.NewConfig()
 
 	backend := backendFromConfig(conf)
@@ -45,12 +52,9 @@ func cliHandler(c *cli.Context) {
 	}
 
 	server, err := newServer(options)
-
-	if err != nil {
-		crash(err)
-	}
-
 	server.Listen(conf.GetInt("port"))
+
+	return err
 }
 
 func backendFromConfig(conf *config.Config) storage.Backend {
