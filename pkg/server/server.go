@@ -42,7 +42,7 @@ func NewServer(options ServerOptions) (*Server, error) {
 		StorageBackend: options.StorageBackend,
 		Logger:         options.Logger,
 		Router:         options.Router,
-		ArtifactURL:    artifactURL, 
+		ArtifactURL:    artifactURL,
 	}
 
 	server.Router.SetRoutes(server.Routes())

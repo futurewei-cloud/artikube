@@ -41,6 +41,10 @@ func main() {
 
 func cliAction(c *cli.Context) error {
 	conf := config.NewConfig()
+	err := conf.ReadConfigFileFromCLIContext(c)
+	if err != nil {
+		crash(err)
+	}
 
 	backend := backendFromConfig(conf)
 	//cache store := storeFromConfig(conf)
@@ -64,9 +68,11 @@ func backendFromConfig(conf *config.Config) storage.Backend {
 
 	storageType := strings.ToLower(conf.GetString("storage.backend"))
 	switch storageType {
-	case "filesystem":
+	case "filesystem":  //not setting storage backend will use filesystem
 		backend = filesystemBackendFromConfig(conf)
 	// will add more support to different storage type
+	case "local": 
+		backend = filesystemBackendFromConfig(conf)
 	default:
 		crash("Currently do not support this type of storage", storageType)
 	}

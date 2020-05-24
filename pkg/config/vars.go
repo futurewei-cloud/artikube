@@ -38,6 +38,24 @@ var configVars = map[string]configVar{
 			EnvVars: []string{"PORT"},
 		},
 	},
+	"storage.backend": {
+		Type:    stringType,
+		Default: "./storage",
+		CLIFlag: &cli.StringFlag{
+			Name:    "storage",
+			Usage:   "storage backend, can be one of: local, amazon, google, oracle",
+			EnvVars: []string{"STORAGE"},
+		},
+	},
+	"storage.filesystem.rootdir": {
+		Type:    stringType,
+		Default: "./.store",
+		CLIFlag: &cli.StringFlag{
+			Name:    "storage-filesystem-rootdir",
+			Usage:   "directory to store charts for file system storage backend",
+			EnvVars: []string{"STORAGE_STORAGE_ROOTDIR"},
+		},
+	},
 }
 
 func populateCLIFlags() {
