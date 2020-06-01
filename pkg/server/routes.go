@@ -7,7 +7,7 @@ import (
 func (svr *Server) Routes() []*arti_router.Route {
 	var routes []*arti_router.Route
 
-	root := arti_router.Route{"GET", "/", svr.getRootPageHandler, ""}
+	root := arti_router.Route{"GET", "/", svr.getRootPageHandler, "pull"}
 	routes = append(routes, &root)
 
 	return routes

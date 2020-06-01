@@ -30,8 +30,9 @@ type RouterOption struct {
 	Password    string
 	ContextPath string
 }
-
+//NewRouter returns a Router that is ready to take requests
 func NewRouter(options RouterOption) *Router {
+	gin.SetMode(gin.DebugMode)
 	engine := gin.New()
 
 	//Add all optional middlewares. The control follow is:
@@ -43,6 +44,7 @@ func NewRouter(options RouterOption) *Router {
 		Logger: options.Logger,
 		Routes: []*Route{},
 	}
+	
 	return router
 }
 

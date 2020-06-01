@@ -29,19 +29,31 @@ type (
 		Debug          bool
 		ArtifactURL    string
 	}
+
+	server interface{ 
+		listen(port int)
+	}
 )
 
 func NewServer(options ServerOptions) (*Server, error) {
-	//logger := arti_logger.NewLogger(&arti_logger.LoggerConfiguration{})
+	logger := arti_logger.NewLogger(&arti_logger.LoggerConfiguration{
+		EnableConsole: true,
+		ConsoleLevel:  arti_logger.LevelDebug,
+		ConsoleJson:   true,
+	})
 	var artifactURL string
 	if options.ArtifactURL != "" {
 		artifactURL = options.ArtifactURL
 	}
 
+	router := arti_router.NewRouter(arti_router.RouterOption{
+		Logger: logger,
+	})
+
 	server := &Server{
 		StorageBackend: options.StorageBackend,
-		Logger:         options.Logger,
-		Router:         options.Router,
+		Logger:         logger,
+		Router:         router,
 		ArtifactURL:    artifactURL,
 	}
 
@@ -49,7 +61,7 @@ func NewServer(options ServerOptions) (*Server, error) {
 
 	return server, nil
 }
-
+//Listen starts a router on a port based on configuration
 func (server *Server) Listen(port int) {
-
+	server.Router.Start(port)
 }
