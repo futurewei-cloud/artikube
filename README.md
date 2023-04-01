@@ -1,3 +1,5 @@
+"This Project has been archived by the owner, who is no longer providing support.  The project remains available to authorized users on a "read only" basis."
+
 # artikube - Golang implementation of an artifact repository manager
 
 Artikube is an open-source aritfact repository manager written in Go (Golang), with the intention to support various cloud storage backends and be deployed in containers orchestrated by Kubernetes.   
